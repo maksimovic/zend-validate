@@ -1,21 +1,17 @@
-# zend-validate (Zend Framework 1)
+# maksimovic/zend-validate
 
-This package is a part of the Zend Framework 1. Each component was separated and put into its own composer package.
-**PHP 5.3-8.3** compatible.
+A PHP 8.1+ compatible fork of [zf1s/zend-validate](https://github.com/zf1s/zend-validate), originally from [Zend Framework 1](https://github.com/zendframework/zf1).
 
-- [Report issues](https://github.com/zf1s/zf1/issues) and
-  [send Pull Requests](https://github.com/zf1s/zf1/pulls)
-  in the [main repository](https://github.com/zf1s/zf1)
-- This package can also be found at [Packagist](http://packagist.org/packages/zf1s).
+Data validation framework with validators for email addresses, hostnames, string length, IP addresses, file properties, and more.
 
 ## Installation
 
-```
-composer require zf1s/zend-validate
+```bash
+composer require maksimovic/zend-validate
 ```
 
-## Resources
+This package replaces `zf1/zend-validate` and `zf1s/zend-validate`.
 
-- [Main Repository](https://github.com/zf1s/zf1)
-- [Original documentation](https://framework.zend.com/manual/1.12/en/manual.html) 
-- [Changelog](https://github.com/zf1s/zf1/blob/master/CHANGELOG.md)
+## License
+
+BSD-3-Clause
