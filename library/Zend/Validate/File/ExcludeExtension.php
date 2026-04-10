@@ -62,7 +62,7 @@ class Zend_Validate_File_ExcludeExtension extends Zend_Validate_File_Extension
     {
         // Is file readable ?
         // require_once 'Zend/Loader.php';
-        if (!Zend_Loader::isReadable($value)) {
+        if (!is_readable($value)) {
             return $this->_throw($file, self::NOT_FOUND);
         }
 

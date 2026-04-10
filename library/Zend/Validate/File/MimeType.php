@@ -215,7 +215,7 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
      */
     public function setTryCommonMagicFilesFlag($flag = true)
     {
-        $this->_tryCommonMagicFiles = (boolean) $flag;
+        $this->_tryCommonMagicFiles = (bool) $flag;
 
         return $this;
     }
@@ -250,7 +250,7 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
      */
     public function enableHeaderCheck($headerCheck = true)
     {
-        $this->_headerCheck = (boolean) $headerCheck;
+        $this->_headerCheck = (bool) $headerCheck;
         return $this;
     }
 
@@ -349,7 +349,7 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
 
         // Is file readable ?
         // require_once 'Zend/Loader.php';
-        if (!Zend_Loader::isReadable($value)) {
+        if (!is_readable($value)) {
             return $this->_throw($file, self::NOT_READABLE);
         }
 

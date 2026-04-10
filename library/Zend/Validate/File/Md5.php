@@ -161,7 +161,7 @@ class Zend_Validate_File_Md5 extends Zend_Validate_File_Hash
     {
         // Is file readable ?
         // require_once 'Zend/Loader.php';
-        if (!Zend_Loader::isReadable($value)) {
+        if (!is_readable($value)) {
             return $this->_throw($file, self::NOT_FOUND);
         }
 
