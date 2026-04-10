@@ -1,7 +1,12 @@
 {
-    "name": "zf1s/zend-validate",
+    "name": "maksimovic/zend-validate",
     "description": "Zend Framework 1 Validate package",
-    "keywords": ["framework", "zf1", "zend", "validate"],
+    "keywords": [
+        "framework",
+        "zf1",
+        "zend",
+        "validate"
+    ],
     "homepage": "http://framework.zend.com/",
     "license": "BSD-3-Clause",
     "require": {
