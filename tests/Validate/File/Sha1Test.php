@@ -1,0 +1,174 @@
+<?php
+
+// Call Zend_Validate_File_Sha1Test::main() if this source file is executed directly.
+if (!defined("PHPUnit_MAIN_METHOD")) {
+    define("PHPUnit_MAIN_METHOD", "Zend_Validate_File_Sha1Test::main");
+}
+
+
+/**
+ * Sha1 testbed
+ *
+ * @category   Zend
+ * @package    Zend_Validate_File
+ * @subpackage UnitTests
+ * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @group      Zend_Validate
+ */
+
+use PHPUnit\Framework\TestCase;
+
+class Zend_Validate_File_Sha1Test extends TestCase
+{
+
+    /**
+     * Ensures that the validator follows expected behavior
+     *
+     * @return void
+     */
+    public function testBasic(): void
+    {
+        $valuesExpected = array(
+            array('b2a5334847b4328e7d19d9b41fd874dffa911c98', true),
+            array('52a5334847b4328e7d19d9b41fd874dffa911c98', false),
+            array(array('42a5334847b4328e7d19d9b41fd874dffa911c98', 'b2a5334847b4328e7d19d9b41fd874dffa911c98'), true),
+            array(array('42a5334847b4328e7d19d9b41fd874dffa911c98', '72a5334847b4328e7d19d9b41fd874dffa911c98'), false),
+        );
+
+        foreach ($valuesExpected as $element) {
+            $validator = new Zend_Validate_File_Sha1($element[0]);
+            $this->assertEquals(
+                $element[1],
+                $validator->isValid(__DIR__ . '/_files/picture.jpg'),
+                "Tested with " . var_export($element, 1)
+            );
+        }
+
+        $validator = new Zend_Validate_File_Sha1('b2a5334847b4328e7d19d9b41fd874dffa911c98');
+        $this->assertFalse($validator->isValid(__DIR__ . '/_files/nofile.mo'));
+        $this->assertTrue(array_key_exists('fileSha1NotFound', $validator->getMessages()));
+
+        $files = array(
+            'name'     => 'test1',
+            'type'     => 'text',
+            'size'     => 200,
+            'tmp_name' => 'tmp_test1',
+            'error'    => 0
+        );
+        $validator = new Zend_Validate_File_Sha1('b2a5334847b4328e7d19d9b41fd874dffa911c98');
+        $this->assertFalse($validator->isValid(__DIR__ . '/_files/nofile.mo', $files));
+        $this->assertTrue(array_key_exists('fileSha1NotFound', $validator->getMessages()));
+
+        $files = array(
+            'name'     => 'testsize.mo',
+            'type'     => 'text',
+            'size'     => 200,
+            'tmp_name' => __DIR__ . '/_files/testsize.mo',
+            'error'    => 0
+        );
+        $validator = new Zend_Validate_File_Sha1('b2a5334847b4328e7d19d9b41fd874dffa911c98');
+        $this->assertTrue($validator->isValid(__DIR__ . '/_files/picture.jpg', $files));
+
+        $files = array(
+            'name'     => 'testsize.mo',
+            'type'     => 'text',
+            'size'     => 200,
+            'tmp_name' => __DIR__ . '/_files/testsize.mo',
+            'error'    => 0
+        );
+        $validator = new Zend_Validate_File_Sha1('42a5334847b4328e7d19d9b41fd874dffa911c98');
+        $this->assertFalse($validator->isValid(__DIR__ . '/_files/picture.jpg', $files));
+        $this->assertTrue(array_key_exists('fileSha1DoesNotMatch', $validator->getMessages()));
+    }
+
+    /**
+     * Ensures that getSha1() returns expected value
+     *
+     * @return void
+     */
+    public function testgetSha1(): void
+    {
+        $validator = new Zend_Validate_File_Sha1('12345');
+        $this->assertEquals(array('12345' => 'sha1'), $validator->getSha1());
+
+        $validator = new Zend_Validate_File_Sha1(array('12345', '12333', '12344'));
+        $this->assertEquals(array('12345' => 'sha1', '12333' => 'sha1', '12344' => 'sha1'), $validator->getSha1());
+    }
+
+    /**
+     * Ensures that getHash() returns expected value
+     *
+     * @return void
+     */
+    public function testgetHash(): void
+    {
+        $validator = new Zend_Validate_File_Sha1('12345');
+        $this->assertEquals(array('12345' => 'sha1'), $validator->getHash());
+
+        $validator = new Zend_Validate_File_Sha1(array('12345', '12333', '12344'));
+        $this->assertEquals(array('12345' => 'sha1', '12333' => 'sha1', '12344' => 'sha1'), $validator->getHash());
+    }
+
+    /**
+     * Ensures that setSha1() returns expected value
+     *
+     * @return void
+     */
+    public function testSetSha1(): void
+    {
+        $validator = new Zend_Validate_File_Sha1('12345');
+        $validator->setSha1('12333');
+        $this->assertEquals(array('12333' => 'sha1'), $validator->getSha1());
+
+        $validator->setSha1(array('12321', '12121'));
+        $this->assertEquals(array('12321' => 'sha1', '12121' => 'sha1'), $validator->getSha1());
+    }
+
+    /**
+     * Ensures that setHash() returns expected value
+     *
+     * @return void
+     */
+    public function testSetHash(): void
+    {
+        $validator = new Zend_Validate_File_Sha1('12345');
+        $validator->setHash('12333');
+        $this->assertEquals(array('12333' => 'sha1'), $validator->getSha1());
+
+        $validator->setHash(array('12321', '12121'));
+        $this->assertEquals(array('12321' => 'sha1', '12121' => 'sha1'), $validator->getSha1());
+    }
+
+    /**
+     * Ensures that addSha1() returns expected value
+     *
+     * @return void
+     */
+    public function testAddSha1(): void
+    {
+        $validator = new Zend_Validate_File_Sha1('12345');
+        $validator->addSha1('12344');
+        $this->assertEquals(array('12345' => 'sha1', '12344' => 'sha1'), $validator->getSha1());
+
+        $validator->addSha1(array('12321', '12121'));
+        $this->assertEquals(array('12345' => 'sha1', '12344' => 'sha1', '12321' => 'sha1', '12121' => 'sha1'), $validator->getSha1());
+    }
+
+    /**
+     * Ensures that addHash() returns expected value
+     *
+     * @return void
+     */
+    public function testAddHash(): void
+    {
+        $validator = new Zend_Validate_File_Sha1('12345');
+        $validator->addHash('12344');
+        $this->assertEquals(array('12345' => 'sha1', '12344' => 'sha1'), $validator->getSha1());
+
+        $validator->addHash(array('12321', '12121'));
+        $this->assertEquals(array('12345' => 'sha1', '12344' => 'sha1', '12321' => 'sha1', '12121' => 'sha1'), $validator->getSha1());
+    }
+}
+
+// Call Zend_Validate_File_Sha1Test::main() if this source file is executed directly.

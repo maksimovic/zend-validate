@@ -65,7 +65,7 @@ class Zend_Validate_File_WordCount extends Zend_Validate_File_Count
     {
         // Is file readable ?
         // require_once 'Zend/Loader.php';
-        if (!Zend_Loader::isReadable($value)) {
+        if (!is_readable($value)) {
             return $this->_throw($file, self::NOT_FOUND);
         }
 

@@ -110,7 +110,7 @@ class Zend_Validate_File_Extension extends Zend_Validate_Abstract
      */
     public function setCase($case)
     {
-        $this->_case = (boolean) $case;
+        $this->_case = (bool) $case;
         return $this;
     }
 
@@ -191,7 +191,7 @@ class Zend_Validate_File_Extension extends Zend_Validate_Abstract
     {
         // Is file readable ?
         // require_once 'Zend/Loader.php';
-        if (!Zend_Loader::isReadable($value)) {
+        if (!is_readable($value)) {
             return $this->_throw($file, self::NOT_FOUND);
         }
 
